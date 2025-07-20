@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject var coordinator = AppCoordinator()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack(path: $coordinator.path) {
+            RepoListView()
+                .navigationDestination(for: AppRoute.self) { route in
+                    switch route {
+                    case .detail(let id):
+                        RepoDetailView(id: id)
+                    }
+                }
         }
-        .padding()
+        .environmentObject(coordinator)
     }
 }
 
